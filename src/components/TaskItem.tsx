@@ -1,5 +1,5 @@
 import React from 'react';
-import { Task } from '../types';
+import type { Task } from '../types';
 import { Check, Briefcase, Heart, User, Trash2 } from 'lucide-react';
 
 interface TaskItemProps {
@@ -20,7 +20,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) 
       case 'work': return <Briefcase size={14} />;
       case 'health': return <Heart size={14} />;
       case 'personal': return <User size={14} />;
-      default: return <Work size={14} />;
+      default: return <Briefcase size={14} />;
     }
   };
 

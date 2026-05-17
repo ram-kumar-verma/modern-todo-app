@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from './firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { collection, query, where, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, orderBy } from 'firebase/firestore';
-import { Task, Priority } from './types';
+import type { Task, Priority } from './types';
 import { Header } from './components/Header';
 import { ProgressBar } from './components/ProgressBar';
 import { TaskItem } from './components/TaskItem';
 import { TaskForm } from './components/TaskForm';
 import { Auth } from './components/Auth';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Check, User as UserIcon } from 'lucide-react';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -81,6 +83,7 @@ function App() {
   };
 
   const toggleTask = async (id: string) => {
+    if (!user) return;
     const task = tasks.find(t => t.id === id);
     if (!task) return;
     try {
@@ -96,6 +99,7 @@ function App() {
   };
 
   const deleteTask = async (id: string) => {
+    if (!user) return;
     try {
       await deleteDoc(doc(db, 'tasks', id));
     } catch (error) {
@@ -168,14 +172,11 @@ function App() {
       {/* Mobile Bottom Nav */}
       <nav className="bg-surface/15 backdrop-blur-3xl border-t border-white/10 fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 rounded-t-2xl shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
         <button className="flex flex-col items-center text-primary font-bold"><Check size={24} /><span className="text-[10px] uppercase mt-1">Tasks</span></button>
-        <button className="flex flex-col items-center text-on-surface-variant/60"><User size={24} /><span className="text-[10px] uppercase mt-1">Profile</span></button>
+        <button className="flex flex-col items-center text-on-surface-variant/60"><UserIcon size={24} /><span className="text-[10px] uppercase mt-1">Profile</span></button>
       </nav>
     </div>
   );
 }
 
-const Check = ({ size }: { size: number }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-);
-
 export default App;
+

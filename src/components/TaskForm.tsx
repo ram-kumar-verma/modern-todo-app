@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Priority } from '../types';
+import type { Priority } from '../types';
 import { Plus, X } from 'lucide-react';
 import { GlassCard } from './GlassCard';
 import { motion, AnimatePresence } from 'framer-motion';
